@@ -31,21 +31,42 @@
   .images {
     padding-top: 5em;
   }
+  
+  .slide{
+    animation: slide 1s ease-in;
+  }
+  
+  @keyframes slide {
+     from {transform: translate(0, 100px);}
+      to {transform: translate(0);}
+  }
+  
+  .pulse {
+    animation: pulse 1s infinite; 
+  }
+
+
+  @keyframes pulse{
+     0%{color: red;}	
+    110%{color: black;}
+  }
+
 
 </style>
-
 </head>
 
 <body>
   <h1>
     Fire Alarm Detected
   </h1>
-  <div class="images">
-    <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/fire.png">
+  <div class="slide">
+    <div class="images">
+      <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/fire.png">
     <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/evacuation.png">
+    </div>
+    <p class="pulse">
+      Evacuate the building
+    </p>
   </div>
-  <p>
-    Evacuate the building
-  </p>
 </body>
 </html>
