@@ -1,7 +1,7 @@
 import xapi from 'xapi';
 
 // Specify the URL alert you wish to display
-const ALERT_URL = 'https://wxsd-sales.github.io/alarm-detection/';
+const ALERT_URL = 'https://wxsd-sales.github.io/alarm-alert-macro/';
 
 // All the user to dismiss the notication and return to normal
 const ALLOW_DISMISS = true;
