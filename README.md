@@ -1,4 +1,4 @@
-# Alarm Detection
+# Alarm Alert Macro
 
 This is a Macro monitors active T3 alarm events. Once an alarm has been detected, it ends all active calls and then displays a web page based notification on the Webex Device. This is useful for providing a visual aid to people in the vicinity which hearing impairments and by ending the call we can force reluctent people to leave the building.
 
@@ -24,7 +24,7 @@ https://help.webex.com/en-us/article/n76l9zbb/Alarm-detection-on-Webex-Board,-De
 
 ## Setup
 
-1. Download the ``alarm-detction.js`` file and upload it to your Webex Room devices Macro editor via the web interface.
+1. Download the ``alarm-alert.js`` file and upload it to your Webex Room devices Macro editor via the web interface.
 2. Configure the Macro by toggling the values at the beginning of the file and set a static URL to display.
 3. Enable the Macro on the editor.
 
