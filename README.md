@@ -1,6 +1,6 @@
 # Alarm Alert Macro
 
-This is a Macro monitors active T3 alarm events. Once an alarm has been detected, it ends all active calls and then displays a web page based notification on the Webex Device. This is useful for providing a visual aid to people in the vicinity which hearing impairments and by ending the call we can force reluctent people to leave the building.
+This Macro monitors T3 alarm events on Webex Devices and once an alarm has been detected, it ends all active calls and then displays a web page based notification on the Webex Device. This is useful for providing a visual aid to people in the vicinity which may have hearing impairments and by ending the call, we can force reluctent people to leave the building.
 
 ## Notification on the main display
 
