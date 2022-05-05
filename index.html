@@ -13,60 +13,89 @@
     text-align: center;
     overflow-x: hidden;
   }
-
+  
   h1 {
     color: white;
-    background-color: red;
     text-align: center;
-    font-size: 5em;
+    font-size: 10vh;
     margin: 0;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: 0;
+    background-color: red; 
+    animation: slide-down 0.75s;
+  }
+  
+  @keyframes slide-down {
+    from {transform: translate(0, -15vh);}
+    to {transform: translate(0);}
   }
 
-  p {
-    font-size: 3em;
+  h2 {
+    font-size: 5vh;
   }
   
   .images {
-    padding-top: 5em;
+    padding-top: 5vh;
+    height: 60vh; 
+  }
+  
+  #fire{
+    margin-bottom: 5vh;
+    animation-delay: 2s;
+    animation: fire-pulse 2s infinite 0.75s;
+  }
+  
+  @keyframes fire-pulse {
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+       transform: scale(0.8);
+    }
+    100% {
+       transform: scale(1.0);
+    }
+  }
+  
+  img {
+    height: 100%;    
   }
   
   .slide{
-    animation: slide 1s ease-in;
+    animation: slide-up 0.75s;
   }
   
-  @keyframes slide {
-     from {transform: translate(0, 100px);}
+  @keyframes slide-up {
+     from {transform: translate(0, 40vh);}
       to {transform: translate(0);}
   }
   
-  .pulse {
-    animation: pulse 1s infinite; 
+  .flash {
+    animation: flash 1s infinite; 
   }
 
 
-  @keyframes pulse{
-     0%{color: red;}	
-    110%{color: black;}
+  @keyframes flash{
+    0%{color: black;}	
+    50%{color: red;}	
+    10%{color: black;}
   }
-
 
 </style>
-</head>
 
+</head>
+  
 <body>
   <h1>
-    Fire Alarm Detected
-  </h1>
+    ALARM DETECTED
+  </h1>    
   <div class="slide">
     <div class="images">
-      <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/fire.png">
-    <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/evacuation.png">
+      <img id='fire' src="https://wxsd-sales.github.io/alarm-alert-macro/images/fire.png">
+      <img src="https://wxsd-sales.github.io/alarm-alert-macro/images/evacuation.png">
     </div>
-    <p class="pulse">
-      Evacuate the building
-    </p>
+    <h2 class="flash">
+      EVACUATE THE BUILDING
+    </h2>
   </div>
 </body>
 </html>
