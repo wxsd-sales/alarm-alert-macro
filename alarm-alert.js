@@ -14,7 +14,7 @@ const END_CAll = true;
 /////////////////////////////////////////////
 
 
-// Activate our the alert notifications
+// Activate the alert notifications
 async function activateAlert() {
 
   // End any active calls
@@ -65,6 +65,9 @@ async function activateAlert() {
   }
 }
 
+
+// Monitor call disconnects and activate the alert
+// if there is still an active alarm
 async function callDisconnect(event) {
 
   console.log('Call Disconnect occured')
@@ -230,9 +233,6 @@ async function init() {
   xapi.Event.CallDisconnect.on(callDisconnect);
 
 }
-
-
-
 
 
 init();
