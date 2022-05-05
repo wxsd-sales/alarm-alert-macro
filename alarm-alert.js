@@ -9,25 +9,76 @@ const ALLOW_DISMISS = true;
 // The macro can automatically end any active calls
 const END_CAll = true; 
 
+/////////////////////////////////////////////
+////////////.Do not change below ////////////
+/////////////////////////////////////////////
+
+
 // Activate our the alert notifications
 async function activateAlert() {
 
-  // TODO, detect if kiosk mode is enabled and display
-
-
+  // End any active calls
   if (END_CAll) {
-    const callState = await xapi.Status.Call.AnswerState.get()
-    console.log(callState)
-    if (callState) {
-      xapi.Command.Call.Disconnect();
-    }
-  } {
-    xapi.Command.UserInterface.WebView.Display(
-    { Url: ALERT_URL });
 
-    if (ALLOW_DISMISS) {
-      displayPrompt();
+    const calls = await xapi.Status.Call.get()
+    
+    if(calls.length > 0) {
+      console.log('Call present, ending call first');
+      xapi.Command.Call.Disconnect();
+      return;
     }
+  }
+
+  // Check to see if this device has kiosk mode enable
+  // and change the Kiosk URL to the Alert URL
+  try {
+
+    const kiosk = await xapi.Config.UserInterface.Kiosk.Mode.get();
+
+    if (kiosk === 'On') {
+
+      console.log('Kiosk mode enabled, setting Kiosk URL to Alert URL')
+
+      const kioskURL = await xapi.Config.UserInterface.Kiosk.Mode.URL.get();
+
+      console.log('Saving Kiosk URL for later recovery');
+
+      mem.write('KioskURL', kioskURL);
+
+      xapi.Config.UserInterface.Kiosk.Mode.URL.set(ALERT_URL);
+
+      return;
+    } 
+  } catch {
+
+    console.log('Kiosk Mode not available on this device');
+
+  }
+
+  console.log('Displaying Web View: ' +ALERT_URL);
+
+  xapi.Command.UserInterface.WebView.Display(
+  { Url: ALERT_URL });
+
+  if (ALLOW_DISMISS) {
+    displayPrompt();
+  }
+}
+
+async function callDisconnect(event) {
+
+  console.log('Call Disconnect occured')
+
+  console.log(event);
+
+  const active = await xapi.Status.RoomAnalytics.T3Alarm.Detected.get();
+
+  if (active === 'True') {
+    console.log('Active still active');
+    setTimeout(activateAlert, 1000);
+  } else {
+    console.log('No active alarms');
+    deactiveAlert();
   }
 
 }
@@ -47,23 +98,67 @@ function removeHttp(url) {
   return url;
 }
 
-async function deactiveAlert() {
-
-  const url = await xapi.Status.UserInterface.WebView.URL.get();
+// This function will compare a URL against the Alert URL
+function activeURL(url) {
 
   const urlNoHTTP = removeHttp(url);
 
   const alertNoHTTP = removeHttp(ALERT_URL);
 
-  if (urlNoHTTP.indexOf(alertNoHTTP) != -1 ) {
-    console.log('Alert URL is active, clearing')
-    xapi.Command.UserInterface.WebView.Clear();
+  return urlNoHTTP.indexOf(alertNoHTTP) != -1; 
+
+}
+
+// This function will deactivate any alert that may be present
+async function deactiveAlert() {
+
+  // First check if kisk mode is enabled and change alert URL 
+  // back the the saved kiosk URL
+  try {
+
+    const kiosk = await xapi.Config.UserInterface.Kiosk.Mode.get();
+
+    if (kiosk === 'On') {
+
+      const kioskURL = await xapi.Config.UserInterface.Kiosk.Mode.URL.get();
+
+      if (activeURL(kioskURL)) {
+
+        console.log('Kiosk URL is the Alert URL');
+
+        const storedURL = mem.read('KioskURL');
+
+        console.log('Restoring stored Kiosk URL: ' + storedURL);
+        xapi.Config.UserInterface.Kiosk.Mode.URL.set(storedURL);
+
+        return;
+
+      } else {
+
+        console.log('Alarm URL not active');
+        return;
+
+      }
+
+    }
+
+  } catch {
+    console.log('Kiosk mode not available on this device')
   }
+
+  const webViewURL = await xapi.Status.UserInterface.WebView.URL.get();
+
+  if (!activeURL(webViewURL)) {
+    console.log('Alert URL not active');
+    return;
+  }
+
+  console.log('Alert URL is active, clearing')
+  
+  xapi.Command.UserInterface.WebView.Clear();
 
   xapi.Command.UserInterface.Message.Prompt.Clear(
     { FeedbackId: 'dismiss_alarm' });
-
-  // TODO, restore kiosk mode 
 
 }
 
@@ -81,6 +176,8 @@ function alarmEvent(active) {
 
 // Display a user prompt with the option to dismiss the alarm notification
 function displayPrompt() {
+
+  console.log('Displaying dismiss prompt');
 
   xapi.Command.UserInterface.Message.Prompt.Display(
     { 
@@ -104,6 +201,9 @@ async function init() {
   // Initialize persistent memory
   await memoryInit()
 
+  // Enable Web Engine 
+  xapi.Config.WebEngine.Mode.set('On');
+
   // Enable the T3 Alarm Dection feature
   xapi.Config.RoomAnalytics.T3AlarmDetection.Mode.set('On');
 
@@ -126,6 +226,8 @@ async function init() {
   if (ALLOW_DISMISS) {
     xapi.Event.UserInterface.Message.Prompt.Response.on(promptResponse);
   }
+
+  xapi.Event.CallDisconnect.on(callDisconnect);
 
 }
 
