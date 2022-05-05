@@ -4,11 +4,13 @@ This Macro monitors T3 alarm events on Webex Devices and once an alarm has been 
 
 ## Notification on the main display
 
-![image](https://user-images.githubusercontent.com/21026209/166694724-45e5a0c5-c209-4279-8b5f-8a3b51050e53.png)
+![ezgif-1-318c603dd6](https://user-images.githubusercontent.com/21026209/167028319-ea55bff9-faa5-4e3a-9c9c-b0863b509e37.gif)
+
 
 ## Notification on the touch device
 
-![image](https://user-images.githubusercontent.com/21026209/166694771-ccca6d8d-b98b-4f4f-905b-9f2f2718bfa7.png)
+<img src="https://user-images.githubusercontent.com/21026209/166694771-ccca6d8d-b98b-4f4f-905b-9f2f2718bfa7.png" width="600" />
+
 
 ## Alarm Detection on Webex Devices
 
