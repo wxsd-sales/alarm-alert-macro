@@ -4,6 +4,17 @@ Webex Devices are able to listen for the sound of T3 Alarms in a building or roo
 
 Providing a visual alert on the Webex Device enables us to notify people in the vicinity which may have hearing impairments and cannot hear the buildings alarm. Also by ending any calls, we can encourage those who may be reluctent to leave the building while on a call.
 
+> IMPORTANT
+> 
+> The alarm detection feature supports T3 alarms only, which is the industry-standard alarm pattern in the United States.
+> 
+> It is not guaranteed that your device will detect an alarm. For example purposes only: low microphone levels will block detection. Therefore, you should not rely on this feature to raise awareness of an alarm and it does not replace any other safety and security measures and documentation.
+
+More information on this feature is available here:
+
+https://help.webex.com/en-us/article/n76l9zbb/Alarm-detection-on-Webex-Board,-Desk,-and-Room-devices
+
+
 ## Example notification on the main display
 
 ![Cisco Project Workplace - hero co creation content collaboration large](https://user-images.githubusercontent.com/21026209/167173892-b02e9cfa-8b71-4f44-8fa8-dd798bfe6549.gif)
@@ -13,12 +24,6 @@ Providing a visual alert on the Webex Device enables us to notify people in the 
 
 <img src="https://user-images.githubusercontent.com/21026209/166694771-ccca6d8d-b98b-4f4f-905b-9f2f2718bfa7.png" width="600" />
 
-
-## Alarm Detection on Webex Devices
-
-More information on this features is available here:
-
-https://help.webex.com/en-us/article/n76l9zbb/Alarm-detection-on-Webex-Board,-Desk,-and-Room-devices
 
 ## Requirements
 
