@@ -4,9 +4,9 @@ Webex Devices are able to listen for the sound of T3 Alarms in a building or roo
 
 Providing a visual alert on the Webex Device enables us to notify people in the vicinity which may have hearing impairments and cannot hear the buildings alarm. Also by ending any calls, we can encourage those who may be reluctent to leave the building while on a call.
 
-## Notification on the main display
+## Example notification on the main display
 
-![ezgif-1-318c603dd6](https://user-images.githubusercontent.com/21026209/167028319-ea55bff9-faa5-4e3a-9c9c-b0863b509e37.gif)
+![Cisco Project Workplace - hero co creation content collaboration large](https://user-images.githubusercontent.com/21026209/167173892-b02e9cfa-8b71-4f44-8fa8-dd798bfe6549.gif)
 
 
 ## Notification on the touch device
