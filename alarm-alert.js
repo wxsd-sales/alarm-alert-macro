@@ -104,9 +104,15 @@ function removeHttp(url) {
 // This function will compare a URL against the Alert URL
 function activeURL(url) {
 
+  if(url === ''){
+    console.log('Empty url');
+    return false;
+  }
   const urlNoHTTP = removeHttp(url);
 
   const alertNoHTTP = removeHttp(ALERT_URL);
+
+  console.log(`URL: ${urlNoHTTP} | Alert URL: ${alertNoHTTP}`);
 
   return urlNoHTTP.indexOf(alertNoHTTP) != -1; 
 
@@ -146,22 +152,28 @@ async function deactiveAlert() {
     }
 
   } catch {
-    console.log('Kiosk mode not available on this device')
+    console.log('Kiosk mode not available on this device');
   }
 
-  const webViewURL = await xapi.Status.UserInterface.WebView.URL.get();
 
-  if (!activeURL(webViewURL)) {
-    console.log('Alert URL not active');
-    return;
-  }
 
-  console.log('Alert URL is active, clearing')
+  const webViews = await xapi.Status.UserInterface.WebView.get();
+
+  console.log(webViews);
+
+  for (let i = 0; i < webViews.length; i++) {
+    if(!activeURL(webViews[i].URL)) {
+
+      console.log('Alert URL is active, clearing')
   
-  xapi.Command.UserInterface.WebView.Clear();
+      xapi.Command.UserInterface.WebView.Clear();
 
-  xapi.Command.UserInterface.Message.Prompt.Clear(
-    { FeedbackId: 'dismiss_alarm' });
+      xapi.Command.UserInterface.Message.Prompt.Clear(
+        { FeedbackId: 'dismiss_alarm' });
+
+    }
+  }
+
 
 }
 
