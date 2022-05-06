@@ -37,6 +37,12 @@ https://help.webex.com/en-us/article/n76l9zbb/Alarm-detection-on-Webex-Board,-De
 2. Configure the Macro by toggling the values at the beginning of the file and set a static URL to display.
 3. Enable the Macro on the editor.
 
+## Testing the Macro
+
+Once you have the Macro running on your Webex Device, try playing the T3 Alarm sound nearby.
+
+Here is an example you can find on Youtube: https://www.youtube.com/watch?v=czyGmRXJ184
+
 
 ## Uninstall
 
