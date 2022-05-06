@@ -70,7 +70,7 @@ async function activateAlert() {
 // if there is still an active alarm
 async function callDisconnect(event) {
 
-  console.log('Call Disconnect occured')
+  console.log('Call Disconnect occured');
 
   console.log(event);
 
@@ -104,15 +104,9 @@ function removeHttp(url) {
 // This function will compare a URL against the Alert URL
 function activeURL(url) {
 
-  if(url === ''){
-    console.log('Empty url');
-    return false;
-  }
   const urlNoHTTP = removeHttp(url);
 
   const alertNoHTTP = removeHttp(ALERT_URL);
-
-  console.log(`URL: ${urlNoHTTP} | Alert URL: ${alertNoHTTP}`);
 
   return urlNoHTTP.indexOf(alertNoHTTP) != -1; 
 
@@ -159,10 +153,9 @@ async function deactiveAlert() {
 
   const webViews = await xapi.Status.UserInterface.WebView.get();
 
-  console.log(webViews);
 
   for (let i = 0; i < webViews.length; i++) {
-    if(!activeURL(webViews[i].URL)) {
+    if(activeURL(webViews[i].URL)) {
 
       console.log('Alert URL is active, clearing')
   
@@ -174,6 +167,8 @@ async function deactiveAlert() {
     }
   }
 
+  xapi.Command.UserInterface.Message.Prompt.Clear(
+        { FeedbackId: 'dismiss_alarm' });
 
 }
 
