@@ -1,5 +1,14 @@
 import xapi from 'xapi';
 
+// This macro will monitor the T3 Alarm Detection status on you Webex Device.
+// Once an alarm event has been detected it will end any active calls and 
+// display the alert URL. You can create a custom alert web page and change
+// the example alert URL to yours if you want, just ensure the Webex Device
+// can reach the site from the network its connected to.
+
+// If your device is in Kiosk Mode, the Kiosk URL will be changed to the alert
+// URL and back to the Kiosk URL after the alert event has ended.
+
 // Specify the URL alert you wish to display
 const ALERT_URL = 'https://wxsd-sales.github.io/alarm-alert-macro/';
 
