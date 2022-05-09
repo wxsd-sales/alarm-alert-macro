@@ -1,7 +1,7 @@
 import xapi from 'xapi';
 
-// This macro will monitor the T3 Alarm Detection status on you Webex Device.
-// Once an alarm event has been detected it will end any active calls and 
+// This macro will monitor the T3 Alarm Detection status on your Webex Device.
+// Once an alarm event has been detected, it will end any active calls and 
 // display the alert URL. You can create a custom alert web page and change
 // the example alert URL to yours if you want, just ensure the Webex Device
 // can reach the site from the network its connected to.
