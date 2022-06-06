@@ -58,5 +58,5 @@ Here is an example you can find on Youtube: https://www.youtube.com/watch?v=czyG
 
 ## Support
 
-Please reach out to the WXSD team at [wxsd@external.cisco.com](mailto:wxsd@external.cisco.com?cc=<your_cec>@cisco.com&subject=RepoName)
-or contact me on Webex (<your_cec>@cisco.com).
+Please reach out to the WXSD team at [wxsd@external.cisco.com](mailto:wxsd@external.cisco.com?cc=wimills@cisco.com&subject=Alarm-alert-macro)
+or contact me on Webex (wimills@cisco.com).
