@@ -1,13 +1,38 @@
+
+/********************************************************
+Copyright (c) 2022 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+               https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+*********************************************************
+ * 
+ * Macro Author:      	William Mills
+ *                    	Technical Solutions Specialist 
+ *                    	wimills@cisco.com
+ *                    	Cisco Systems
+ * 
+ * Version: 1-0-0
+ * Released: 06/14/22
+ * 
+ * This macro will monitor the T3 Alarm Detection status on your Webex Device.
+ * Once an alarm event has been detected, it will end any active calls and 
+ * display the alert URL. You can create a custom alert web page and change
+ * the example alert URL to yours if you want, just ensure the Webex Device
+ * can reach the site from the network its connected to.
+ * 
+ * Configure the desired alert URL you whish to diplay and select the macro
+ * behaviou using the below toggles. 
+ * 
+ ********************************************************/
+
 import xapi from 'xapi';
-
-// This macro will monitor the T3 Alarm Detection status on your Webex Device.
-// Once an alarm event has been detected, it will end any active calls and 
-// display the alert URL. You can create a custom alert web page and change
-// the example alert URL to yours if you want, just ensure the Webex Device
-// can reach the site from the network its connected to.
-
-// If your device is in Kiosk Mode, the Kiosk URL will be changed to the alert
-// URL and back to the Kiosk URL after the alert event has ended.
 
 // Specify the URL alert you wish to display
 const ALERT_URL = 'https://wxsd-sales.github.io/alarm-alert-macro/';
@@ -36,32 +61,6 @@ async function activateAlert() {
       xapi.Command.Call.Disconnect();
       return;
     }
-  }
-
-  // Check to see if this device has kiosk mode enable
-  // and change the Kiosk URL to the Alert URL
-  try {
-
-    const kiosk = await xapi.Config.UserInterface.Kiosk.Mode.get();
-
-    if (kiosk === 'On') {
-
-      console.log('Kiosk mode enabled, setting Kiosk URL to Alert URL')
-
-      const kioskURL = await xapi.Config.UserInterface.Kiosk.Mode.URL.get();
-
-      console.log('Saving Kiosk URL for later recovery');
-
-      mem.write('KioskURL', kioskURL);
-
-      xapi.Config.UserInterface.Kiosk.Mode.URL.set(ALERT_URL);
-
-      return;
-    } 
-  } catch {
-
-    console.log('Kiosk Mode not available on this device');
-
   }
 
   console.log('Displaying Web View: ' +ALERT_URL);
@@ -124,44 +123,7 @@ function activeURL(url) {
 // This function will deactivate any alert that may be present
 async function deactiveAlert() {
 
-  // First check if kisk mode is enabled and change alert URL 
-  // back the the saved kiosk URL
-  try {
-
-    const kiosk = await xapi.Config.UserInterface.Kiosk.Mode.get();
-
-    if (kiosk === 'On') {
-
-      const kioskURL = await xapi.Config.UserInterface.Kiosk.Mode.URL.get();
-
-      if (activeURL(kioskURL)) {
-
-        console.log('Kiosk URL is the Alert URL');
-
-        const storedURL = mem.read('KioskURL');
-
-        console.log('Restoring stored Kiosk URL: ' + storedURL);
-        xapi.Config.UserInterface.Kiosk.Mode.URL.set(storedURL);
-
-        return;
-
-      } else {
-
-        console.log('Alarm URL not active');
-        return;
-
-      }
-
-    }
-
-  } catch {
-    console.log('Kiosk mode not available on this device');
-  }
-
-
-
   const webViews = await xapi.Status.UserInterface.WebView.get();
-
 
   for (let i = 0; i < webViews.length; i++) {
     if(activeURL(webViews[i].URL)) {
@@ -217,9 +179,6 @@ function promptResponse(event) {
 
 async function init() {
 
-  // Initialize persistent memory
-  await memoryInit()
-
   // Enable Web Engine 
   xapi.Config.WebEngine.Mode.set('On');
 
@@ -246,101 +205,10 @@ async function init() {
     xapi.Event.UserInterface.Message.Prompt.Response.on(promptResponse);
   }
 
+  // Monitor call disconnects so we can display the alert at the correct time
   xapi.Event.CallDisconnect.on(callDisconnect);
 
 }
 
 
 init();
-
-
-//--__--__--__--__--__--__
-//Memory Related Macros
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-var mem = {
-  "localScript": module.name.replace('./', '')
-};
-
-function memoryInit() {
-  return new Promise((resolve) => {
-    xapi.command('macros macro get', {
-      Name: "Memory_Storage"
-    }).then(() => {
-      resolve();
-    }).catch(e => {
-      xapi.Command.UserInterface.Message.Alert.Display({
-        Title: '⚠ Setting up USB mode ⚠',
-        Text: 'Set-up detected, running initial USB mode check<p>Please Wait until this prompt clears. Approximate Wait 25-30 seconds'
-      })
-      console.debug('Uh-Oh, no storage Macro found, building "' + "Memory_Storage");
-      xapi.command('macros macro save', {
-        Name: "Memory_Storage"
-      },
-        `var memory = {\n\t"./_$Info": {\n\t\t"Warning": "Do NOT modify this document, as other Scripts/Macros may rely on this information", \n\t\t"AvailableFunctions": {\n\t\t\t"local": ["mem.read('key')", "mem.write('key', 'value')", "mem.remove('key')", "mem.print()"],\n\t\t\t"global": ["mem.read.global('key')", "mem.write.global('key', 'value')", "mem.remove.global('key')", "mem.print.global()"]\n\t\t},\n\t\t"Guide": "https://github.com/Bobby-McGonigle/Cisco-RoomDevice-Macro-Projects-Examples/tree/master/Macro%20Memory%20Storage"\n\t},\n\t"ExampleKey": "Example Value"\n}`
-      ).then(() => {
-        sleep(500).then(() => {
-          xapi.Command.Macros.Runtime.Restart();
-        })
-      });
-
-    });
-  });
-};
-
-mem.read = function (key) {
-  return new Promise((resolve, reject) => {
-    xapi.command('Macros Macro Get', {
-      Content: 'True',
-      Name: "Memory_Storage"
-    }).then((event) => {
-      let raw = event.Macro[0].Content.replace(/var.*memory.*=\s*{/g, '{')
-      let store = JSON.parse(raw)
-      let temp;
-      if (store[mem.localScript] == undefined) {
-        store[mem.localScript] = {}
-        temp = store[mem.localScript]
-      } else {
-        temp = store[mem.localScript]
-      }
-      if (temp[key] != undefined) {
-        resolve(temp[key])
-      } else {
-        reject(new Error('Local Read Error. Object Key: "' + key + '" not found in \'' + "Memory_Storage" + '\' from script "' + mem.localScript + '"'))
-      }
-    })
-  });
-}
-
-mem.write = function (key, value) {
-  return new Promise((resolve) => {
-    xapi.command('Macros Macro Get', {
-      Content: 'True',
-      Name: "Memory_Storage"
-    }).then((event) => {
-      let raw = event.Macro[0].Content.replace(/var.*memory.*=\s*{/g, '{');
-      let store = JSON.parse(raw);
-      let temp;
-      if (store[mem.localScript] == undefined) {
-        store[mem.localScript] = {};
-        temp = store[mem.localScript];
-      } else {
-        temp = store[mem.localScript]
-      };
-      temp[key] = value;
-      store[mem.localScript] = temp;
-      let newStore = JSON.stringify(store, null, 4);
-      xapi.command('Macros Macro Save', {
-        Name: "Memory_Storage"
-      },
-        `var memory = ${newStore}`
-      ).then(() => {
-        console.debug('Local Write Complete => "' + mem.localScript + '" : {"' + key + '" : "' + value + '"}');
-        resolve(value);
-      });
-    });
-  });
-};
