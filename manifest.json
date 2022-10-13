@@ -1,0 +1,20 @@
+
+
+{
+  "version": "1",
+  "profile": {
+    "macro": {
+      "items": [
+        {
+          "payload": "alarm-alert.js,
+          "id": "alarm-alert",
+          "type": "url"
+        }
+      ]
+    },
+    "roomcontrol": {
+      "items": []
+    },
+    "userParams": []
+  }
+}
