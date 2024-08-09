@@ -20,7 +20,7 @@
  * Update: 1-1-0:
  * 
  * - Added support for auto converted connected Room Scheduler to PWA Mode
- * and displaying Alert Web App on the display.
+ * and displaying Alert Web App on display.
  *
  * Full Readme, source code and license agreement available on Github:
  * https://github.com/wxsd-sales/alarm-alert-macro
@@ -37,7 +37,8 @@ const config = {
   alertURL: 'https://wxsd-sales.github.io/alarm-alert-macro/',
   allowDismiss: true,
   autoEndCall: false,
-  displayOnScheduler: true
+  displayOnScheduler: false,
+  disableLedOnAlert: true
 }
 
 /*********************************************************
@@ -74,9 +75,15 @@ async function activateAlert() {
   }
 
   displayWebview();
-  
+
   if (config.allowDismiss) {
     displayPrompt();
+  }
+
+  if(config.disableLedOnAlert){
+    const ledMode = await xapi.Config.UserInterface.LedControl.Mode.get();
+    await saveData('ledMode', ledMode);
+    await xapi.Config.UserInterface.LedControl.Mode.set('Off');
   }
   
   if(!config.displayOnScheduler) return
@@ -98,6 +105,8 @@ async function activateAlert() {
   // Convert all Schedulers to PWA Mode
   schedulers.forEach(scheduler => convertToPWA(scheduler));
 
+  
+
 }
 
 async function deactiveAlert() {
@@ -110,6 +119,11 @@ async function deactiveAlert() {
   }
   xapi.Command.UserInterface.Message.Prompt.Clear({ FeedbackId: 'dismiss_alarm' });
 
+
+  if(config.disableLedOnAlert){
+    const ledMode = await readData('ledMode') ?? 'Auto';
+    await xapi.Config.UserInterface.LedControl.Mode.set(ledMode);
+  }
 
   if(!config.displayOnScheduler) return
 
