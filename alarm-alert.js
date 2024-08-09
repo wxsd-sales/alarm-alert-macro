@@ -73,7 +73,8 @@ async function activateAlert() {
     }
   }
 
-  //displayWebview();
+  displayWebview();
+  
   if (config.allowDismiss) {
     displayPrompt();
   }
