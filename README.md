@@ -4,6 +4,9 @@ This Webex Device macro displays a web based alert when the device detects a T3 
 
 This is example macro demostrates how to subcribe to the T3 Alarm status change and open webviews on a Webex device. This can be used by an admin to build and launch custom alert messages as well as enforce call ending possiblity.
 
+![Cisco Project Workplace - hero co creation content collaboration large](https://user-images.githubusercontent.com/21026209/167173892-b02e9cfa-8b71-4f44-8fa8-dd798bfe6549.gif)
+
+
 ## Overview
 
 Webex Devices are able to listen for the sound of T3 Alarms in a building or room and can trigger an event which we are able to monitor via the device APIs. This Macro demostrates how to do this and once an alarm event has been triggered, it ends all active calls and then displays a notification on the Webex Device.
@@ -19,13 +22,15 @@ More information on this feature is available here:
 
 https://help.webex.com/en-us/article/n76l9zbb/Alarm-detection-on-Webex-Board,-Desk,-and-Room-devices
 
+## Flowchart
 
-### Example notification on the main display
-
-![Cisco Project Workplace - hero co creation content collaboration large](https://user-images.githubusercontent.com/21026209/167173892-b02e9cfa-8b71-4f44-8fa8-dd798bfe6549.gif)
+<img width="750" alt="image" src="https://github.com/user-attachments/assets/8e73cb9d-72f9-417a-875b-d5e76d58c5d1">
 
 
-### Notification on the touch device
+
+## Example notifications:
+
+### Controller
 
 <img src="https://user-images.githubusercontent.com/21026209/166694771-ccca6d8d-b98b-4f4f-905b-9f2f2718bfa7.png" width="600" />
 
